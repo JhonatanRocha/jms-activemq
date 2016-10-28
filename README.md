@@ -11,6 +11,13 @@ This repository the full course files from the [course](https://cursos.alura.com
 
 > - [Apache-Activemq](http://activemq.apache.org/download.html).
 
+> ##Tips (Windows):
+
+> - `activemq.bat start` : To start ActiveMQ.
+> - `http://localhost:8161/` : Control Panel from ActiveMQ.
+> - `User: admin | Pass: admin` : Login to access ActiveMQ.  
+> - `java -cp C:/Users/rochaj2/Documents/apache-activemq-5.12.0/activemq-all-5.12.0.jar;C:/Users/rochaj2/Documents/workspace/jhol/jms-activemq/aula-jms.jar br.com.caelum.TesteMensageria` : To run the Jars from the project.
+
 > ##Classes:
 
 > - `Class 1` : Introducing to Messaging with ActiveMQ

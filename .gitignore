@@ -1,0 +1,7 @@
+/build/
+.settings/
+.project
+.classpath
+.DS_Store
+MANIFEST.MF
+/target/
