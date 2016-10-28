@@ -1,20 +1,16 @@
 package com.jms.activemq;
 
-import java.util.Scanner;
-
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageListener;
+import javax.jms.MessageProducer;
 import javax.jms.Session;
-import javax.jms.TextMessage;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-public class ConsumerTest {
+public class ProducerTest {
 
 	public static void main(String[] args) throws JMSException, NamingException {
 		
@@ -28,26 +24,16 @@ public class ConsumerTest {
 		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		
 		Destination queue = (Destination) context.lookup("financial");
-		MessageConsumer consumer = session.createConsumer(queue);
 		
-		//Message receivedMessage = consumer.receive(2000);
+		MessageProducer producer = session.createProducer(queue);
 		
-		consumer.setMessageListener(new MessageListener() {
+		
+		for (int i = 0; i < 1000; i++) {
+			Message message = session.createTextMessage("<pedido><id>" + i + "</id></pedido>");
+			producer.send(message);
+		}
 
-			@Override
-			public void onMessage(Message message) {
-				
-				TextMessage textMessage = (TextMessage) message;
-				
-				try {
-					System.out.println(textMessage.getText());
-				} catch (JMSException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		
-		new Scanner(System.in).nextLine();
+		//new Scanner(System.in).nextLine();
 		
 		session.close();
 		connection.close();
