@@ -10,7 +10,7 @@ import javax.jms.Session;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-public class ProducerTest {
+public class QueueProducerTest {
 
 	public static void main(String[] args) throws JMSException, NamingException {
 		

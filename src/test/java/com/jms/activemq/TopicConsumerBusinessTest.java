@@ -11,10 +11,11 @@ import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+import javax.jms.Topic;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-public class ConsumerTest {
+public class TopicConsumerBusinessTest {
 
 	public static void main(String[] args) throws JMSException, NamingException {
 		
@@ -23,14 +24,14 @@ public class ConsumerTest {
 		ConnectionFactory factory = (ConnectionFactory) context.lookup("ConnectionFactory");
 		
 		Connection connection = factory.createConnection();
+		connection.setClientID("business");
 		connection.start();
 		
 		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		
-		Destination queue = (Destination) context.lookup("financial");
-		MessageConsumer consumer = session.createConsumer(queue);
+		Topic topic = (Topic) context.lookup("store");
 		
-		//Message receivedMessage = consumer.receive(2000);
+		MessageConsumer consumer = session.createDurableSubscriber(topic, "subscription");
 		
 		consumer.setMessageListener(new MessageListener() {
 
