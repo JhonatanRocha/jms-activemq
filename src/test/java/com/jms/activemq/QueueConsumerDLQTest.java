@@ -1,16 +1,20 @@
 package com.jms.activemq;
 
+import java.util.Scanner;
+
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.MessageProducer;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageListener;
 import javax.jms.Session;
+import javax.jms.TextMessage;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-public class QueueProducerTest {
+public class QueueConsumerDLQTest {
 
 	public static void main(String[] args) throws JMSException, NamingException {
 		
@@ -23,19 +27,19 @@ public class QueueProducerTest {
 		
 		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		
-		Destination queue = (Destination) context.lookup("financial");
+		Destination queue = (Destination) context.lookup("DLQ");
+		MessageConsumer consumer = session.createConsumer(queue);
 		
-		MessageProducer producer = session.createProducer(queue);
-		
-		Message message = session.createTextMessage("<pedido><id>123456</id></pedido>");
-		producer.send(message);		
-		
-//		for (int i = 0; i < 1000; i++) {
-//			Message message = session.createTextMessage("<pedido><id>" + i + "</id></pedido>");
-//			producer.send(message);
-//		}
+		consumer.setMessageListener(new MessageListener() {
 
-		//new Scanner(System.in).nextLine();
+			@Override
+			public void onMessage(Message message) {
+				
+				System.out.println(message);
+			}
+		});
+		
+		new Scanner(System.in).nextLine();
 		
 		session.close();
 		connection.close();

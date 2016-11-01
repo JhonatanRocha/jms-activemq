@@ -9,6 +9,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
+import javax.jms.ObjectMessage;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.jms.Topic;
@@ -38,10 +39,11 @@ public class TopicConsumerBusinessTest {
 			@Override
 			public void onMessage(Message message) {
 				
-				TextMessage textMessage = (TextMessage) message;
+				ObjectMessage objectMessage = (ObjectMessage) message;
 				
 				try {
-					System.out.println(textMessage.getText());
+					Order order = (Order) objectMessage.getObject();
+					System.out.println(order.getCode());
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

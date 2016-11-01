@@ -1,5 +1,7 @@
 package com.jms.activemq;
 
+import java.io.StringWriter;
+
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -9,6 +11,7 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.xml.bind.JAXB;
 
 public class TopicProducerTest {
 
@@ -27,7 +30,16 @@ public class TopicProducerTest {
 		
 		MessageProducer producer = session.createProducer(topic);
 		
-		Message message = session.createTextMessage("<pedido><id>5678</id></pedido>");
+		Order order = new OrderFactory().generateOrderWithValues();
+		
+//		StringWriter writer = new StringWriter();
+//		
+//		JAXB.marshal(order, writer);
+//		
+//		String xml = writer.toString();
+//		
+//		System.out.println(xml);
+		Message message = session.createObjectMessage(order);
 //		message.setBooleanProperty("ebook", true);
 		producer.send(message);
 
